@@ -1,3 +1,5 @@
+#PowerShell
+
 #========================================
 #Function return process result
 Function ProcessResult ($Description) # | ProcessResult -Description "Description"
