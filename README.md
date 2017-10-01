@@ -1,1 +1,1 @@
-#PowerShell
+script.cmd Run As Administrator
