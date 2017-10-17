@@ -1,5 +1,5 @@
 #PowerShell
-#Requires –Version 4
+#Requires -Version 4
 
 Function Get-RandomHostname()
 {
