@@ -10,4 +10,4 @@ Function Get-RandomHostname()
     Write-Host $RandomHostname
 } #end Get-RandomHostname
 
-Get-RandomHostname
+1..10 | % {Get-RandomHostname}
