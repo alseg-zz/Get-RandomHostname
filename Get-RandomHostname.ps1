@@ -14,10 +14,11 @@
 Param(
     [int]
     [ValidateRange(2,15)]
+    [Alias("l")]
     $length = 15,
     
     [int]
-    [ValidateRange(1,20)]
+    [ValidateRange(1,200)]
     [Alias("n")]
     $number = 1
     ) #end Param
@@ -36,10 +37,10 @@ Function Get-RandomHostname([int] $length = 15)
     Get-RandomHostname
     Without length argument default length is 15 symbols
     .EXAMPLE
-    Get-RandomHostname -length 22
+    Get-RandomHostname -l 22
     Set length manually
     .EXAMPLE
-    Get-RandomHostname -length 5 -n 20
+    Get-RandomHostname -l 5 -n 20
     Set length manually and show 20 results
     #>
 
