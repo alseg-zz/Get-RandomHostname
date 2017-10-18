@@ -12,10 +12,15 @@
 
 #Argument for command line request
 Param(
-    [ValidateRange(1,60)]
     [int]
-    $length = 15
-    )
+    [ValidateRange(2,15)]
+    $length = 15,
+    
+    [int]
+    [ValidateRange(1,20)]
+    [Alias("n")]
+    $number = 1
+    ) #end Param
 
 #Function Get-RandomHostname
 Function Get-RandomHostname([int] $length = 15)
@@ -33,11 +38,16 @@ Function Get-RandomHostname([int] $length = 15)
     .EXAMPLE
     Get-RandomHostname -length 22
     Set length manually
+    .EXAMPLE
+    Get-RandomHostname -length 5 -n 20
+    Set length manually and show 20 results
     #>
 
-    $RandomHostname = (-join (((65..72) + (74..78) + (80..90)) | Get-Random -Count 1 | % {[char]$_})) + (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -Count ($length - 1) | % {[char]$_}))
+    $RandomHostname = (-join (((65..72) + (74..78) + (80..90)) | Get-Random -Count 1 | % {[char]$_})) + `
+    (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -Count ($length - 1) | % {[char]$_}))
+    
     Return $RandomHostname
 } #end Get-RandomHostname
 
 # *** Entry point to script ***
-1..10 | % {Write-Host $(Get-RandomHostname -length $length)}
+1..$number | % {Write-Host $(Get-RandomHostname -length $length)}
