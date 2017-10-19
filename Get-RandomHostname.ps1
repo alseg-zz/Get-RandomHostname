@@ -12,15 +12,13 @@
 
 #Argument for command line request
 Param(
-    [int]
     [ValidateRange(2,15)]
     [Alias("l")]
-    $length = 15,
+    [Int]$Length = 15,
     
-    [int]
     [ValidateRange(1,200)]
     [Alias("n")]
-    $number = 1
+    [Int]$Number = 1
     ) #end Param
 
 #Function Get-RandomHostname
@@ -28,34 +26,34 @@ Function Get-RandomHostname
 {
     <#
     .DESCRIPTION
-    Generate random hostname
+        Generate random hostname
     .SYNOPSIS
-    Generate new hostname string
-    Symbols in ASCII character set, always started from letters, 15 symbols length, uses all upper-case letters and 0-9 numbers
-    Exclude symbols: "073 I", "079 O"
+        Generate new hostname string
+        Symbols in ASCII character set, always started from letters, 15 symbols length, uses all upper-case letters and 0-9 numbers
+        Exclude symbols: "073 I", "079 O"
     .EXAMPLE
-    Get-RandomHostname
-    Without length argument default length is 15 symbols
+        Get-RandomHostname
+        Without length argument default length is 15 symbols
     .EXAMPLE
-    Get-RandomHostname -l 22
-    Set length manually
+        Get-RandomHostname -l 22
+        Set length manually
     .EXAMPLE
-    Get-RandomHostname -l 5 -n 20
-    Set length manually and show 20 results
+        Get-RandomHostname -l 5 -n 20
+        Set length manually and show 20 results
     #>
 
     Param(
         [int]
         [ValidateRange(2,15)]
         [Alias("l")]
-        $length = 15
+        $Length = 15
     ) #end Param
 
-    $RandomHostname = (-join (((65..72) + (74..78) + (80..90)) | Get-Random -Count 1 | % {[char]$_})) + `
-    (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -Count ($length - 1) | % {[char]$_}))
+    $RandomHostname = (-join (((65..72) + (74..78) + (80..90)) | Get-Random -count 1 | % {[char]$_})) + `
+    (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -count ($Length - 1) | % {[char]$_}))
     
     Return $RandomHostname
 } #end Get-RandomHostname
 
 # *** Entry point to script ***
-1..$number | % {Write-Host $(Get-RandomHostname -length $length)}
+1..$number | % {Write-Host $(Get-RandomHostname -length $Length)}
