@@ -24,7 +24,7 @@ Param(
     ) #end Param
 
 #Function Get-RandomHostname
-Function Get-RandomHostname([int] $length = 15)
+Function Get-RandomHostname
 {
     <#
     .DESCRIPTION
@@ -43,6 +43,13 @@ Function Get-RandomHostname([int] $length = 15)
     Get-RandomHostname -l 5 -n 20
     Set length manually and show 20 results
     #>
+
+    Param(
+        [int]
+        [ValidateRange(2,15)]
+        [Alias("l")]
+        $length = 15
+    ) #end Param
 
     $RandomHostname = (-join (((65..72) + (74..78) + (80..90)) | Get-Random -Count 1 | % {[char]$_})) + `
     (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -Count ($length - 1) | % {[char]$_}))
