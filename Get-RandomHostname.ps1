@@ -31,6 +31,10 @@ Function Get-RandomHostname
         Generate new hostname string
         Symbols in ASCII character set, always started from letters, 15 symbols length, uses all upper-case letters and 0-9 numbers
         Exclude symbols: "073 I", "079 O"
+    .PARAMETER Length
+        ToDo
+    .PARAMETER Number
+        ToDo
     .EXAMPLE
         Get-RandomHostname
         Without length argument default length is 15 symbols
