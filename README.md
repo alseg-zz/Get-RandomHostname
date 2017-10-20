@@ -8,5 +8,7 @@ script.cmd
 Get-RandomHostname
 #Example 3:
 Get-RandomHostname -length <1-60>
+#Example 4:
+Get-RandomHostname -l 15 -n 50
 ```
 ---
