@@ -19,7 +19,7 @@ Param(
     [ValidateRange(1,200)]
     [Alias("n")]
     [Int]$Number = 1
-    ) #end Param
+    ) #End Param
 
 #Function Get-RandomHostname
 Function Get-RandomHostname
@@ -47,17 +47,17 @@ Function Get-RandomHostname
     #>
 
     Param(
-        [int]
+        [Int]
         [ValidateRange(2,15)]
         [Alias("l")]
         $Length = 15
-    ) #end Param
+    ) #End Param
 
     $RandomHostname = (-join (((65..72) + (74..78) + (80..90)) | Get-Random -count 1 | % {[char]$_})) + `
     (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -count ($Length - 1) | % {[char]$_}))
     
     Return $RandomHostname
-} #end Get-RandomHostname
+} #End Get-RandomHostname
 
 # *** Entry point to script ***
 1..$number | % {Write-Host $(Get-RandomHostname -length $Length)}
