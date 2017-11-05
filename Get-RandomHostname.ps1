@@ -48,8 +48,8 @@ Function Get-RandomHostname
 
     for ($i = 1; $i -le $Number; $i++)
         {
-            $RandomHostname = (-join (((65..72) + (74..78) + (80..90)) | Get-Random -count 1 | % {[char]$_})) + `
-            (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -count ($Length - 1) | % {[char]$_}))
+            $RandomHostname = (-join (((65..72) + (74..78) + (80..90)) | Get-Random -count 1 | ForEach-Object {[char]$_})) + `
+            (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -count ($Length - 1) | ForEach-Object {[char]$_}))
             Write-Host $RandomHostname
         }
 }#End Get-RandomHostname
