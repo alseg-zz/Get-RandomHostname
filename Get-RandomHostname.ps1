@@ -49,10 +49,10 @@ Function Get-RandomHostname
     #Function body
     $Result = @()
 
-    for ($i = 1; $i -le $Number; $i++)
+    For ($i = 1; $i -le $Number; $i++)
         {
-            $RandomHostname = (-join (((65..72) + (74..78) + (80..90)) | Get-Random -Count 1 | ForEach-Object {[char]$_})) + `
-            (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -Count ($Length - 1) | ForEach-Object {[char]$_}))
+            $RandomHostname = (-Join (((65..72) + (74..78) + (80..90)) | Get-Random -Count 1 | ForEach-Object {[Char]$_})) + `
+            (-Join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -Count ($Length - 1) | ForEach-Object {[Char]$_}))
             $Result += $RandomHostname
         }
     #End of function body
