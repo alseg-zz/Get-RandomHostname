@@ -43,12 +43,12 @@ Function Get-RandomHostname
     [CmdletBinding()]
     Param(
         [Parameter()]
-        [ValidateRange(1,100)]
+        [ValidateRange(1, 100)]
         [Alias("l")]
         [Int]$Length = 15,
 
         [Parameter()]
-        [ValidateRange(1,200)]
+        [ValidateRange(1, 200)]
         [Alias("n")]
         [Int]$Number = 1
         )
