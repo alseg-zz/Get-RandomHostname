@@ -6,8 +6,8 @@
 Import-Module <path>
 Get-Help Get-RandomHostname -full
 
-Write-Host (Get-RandomHostname)
-Write-Host (Get-RandomHostname -l 22)
-Write-Host (Get-RandomHostname -n 50)
-Write-Host (Get-RandomHostname -l 20 -n 30)
+Get-RandomHostname
+Get-RandomHostname -l 22
+Get-RandomHostname -n 50
+Get-RandomHostname -l 20 -n 30
 ```
