@@ -1,14 +1,10 @@
 # Random hostname generator
 
-## Usage:
-```
-Import-Module <path>
-Get-Help Get-RandomHostname -full
-```
+`Import-Module <path>`
 
-```
-Get-RandomHostname
-Get-RandomHostname -l 22
-Get-RandomHostname -n 50
-Get-RandomHostname -l 20 -n 30
-```
+`Get-RandomHostname`
+`Get-RandomHostname -Number 5`
+`Get-RandomHostname -Number 5 -Length 10`
+`Get-RandomHostname -Number 5 -Length 10 -Uppercase $false`
+
+`Get-Help Get-RandomHostname -full`
