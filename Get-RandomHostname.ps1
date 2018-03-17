@@ -1,5 +1,5 @@
 #PowerShell
-#Requires -Version 4
+#Requires -Version 3
 
 Function Get-RandomHostname
 {
@@ -17,6 +17,9 @@ Function Get-RandomHostname
 
     .PARAMETER Number
         Number output random hostname strings (default is 1).
+
+    .PARAMETER Uppercase
+        Hostname in uppercase or lowercase (default uppercase).
 
     .LINK
         https://github.com/alseg/Get-RandomHostname
@@ -48,7 +51,11 @@ Function Get-RandomHostname
         [Parameter()]
         [ValidateRange(1, 200)]
         [Alias("n")]
-        [Int]$Number = 1
+        [Int]$Number = 1,
+
+        [Parameter()]
+        [Alias("upper")]
+        [Bool]$Uppercase = 1
         )
 
     $Result = @()
@@ -62,8 +69,13 @@ Function Get-RandomHostname
             $RandomHostname = `
                 (-Join (((65..72) + (74..78) + (80..90)) | Get-Random -Count 1 | ForEach-Object {[Char]$_})) + `
                 (-Join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -Count $Length | ForEach-Object {[Char]$_}))
-            
-            $Result += $RandomHostname.Substring(0, $RandomHostname.Length - 1)
+
+            If ($Uppercase) {
+                $Result += $RandomHostname.Substring(0, $RandomHostname.Length - 1)
+            }
+            Else {
+                $Result += ($RandomHostname.Substring(0, $RandomHostname.Length - 1)).ToLower()
+            }
         }
 
     Return $Result
