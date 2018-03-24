@@ -1,8 +1,8 @@
 #PowerShell
-#Requires -Version 3
+#Requires -Version 3.0
 
-Function Get-RandomHostname
-{
+
+function Get-RandomHostname {
     <#
     .SYNOPSIS
         Generate random hostname function.
@@ -25,58 +25,64 @@ Function Get-RandomHostname
         https://github.com/alseg/Get-RandomHostname
 
     .NOTES
-        ToDo-List:
-        * Task
+        .
 
     .EXAMPLE
-        PS> Import-Module <path>
-        PS> Get-RandomHostname
+        Get-RandomHostname
 
     .EXAMPLE
-        PS> Import-Module <path>
-        PS> Get-RandomHostname -l 22
+        Get-RandomHostname -Length 22
 
     .EXAMPLE
-        PS> Import-Module <path>
-        PS> Get-RandomHostname -l 5 -n 20
+        Get-RandomHostname -Length 5 -Number 20
+
+    .EXAMPLE
+        Get-RandomHostname -Length 5 -Number 20 -Format Lowercase
     #>
 
     [CmdletBinding()]
+    [OutputType([Array])]
     Param(
         [Parameter()]
         [ValidateRange(1, 100)]
         [Alias("l")]
-        [Int]$Length = 15,
+        [Int]
+        $Length = 15,
 
         [Parameter()]
         [ValidateRange(1, 200)]
         [Alias("n")]
-        [Int]$Number = 1,
+        [Int]
+        $Number = 1,
 
         [Parameter()]
-        [Alias("upper")]
-        [Bool]$Uppercase = 1
+        [ValidateSet("Uppercase", "Lowercase")]
+        [String]
+        $Format = "Uppercase"
         )
 
-    $Result = @()
+    [Array]$Result = @()
 
-    For ($i = 1; $i -le $Number; $i++)
+    for ($i = 1; $i -le $Number; $i++)
         {
-            # ASCII characters:
-            # 65..90 - Uppercase letters [A-Z] (Exclude symbols: "073 I", "079 O").
-            # 48..57 - Numbers [0-9].
-            # Always start from letter.
-            $RandomHostname = `
-                (-Join (((65..72) + (74..78) + (80..90)) | Get-Random -Count 1 | ForEach-Object {[Char]$_})) + `
-                (-Join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -Count $Length | ForEach-Object {[Char]$_}))
+            <#
+            ASCII characters:
+            65..90 - Uppercase letters [A-Z] (Exclude symbols: "073 I", "079 O").
+            48..57 - Numbers [0-9].
+            Always start from letter.
+            #>
 
-            If ($Uppercase) {
-                $Result += $RandomHostname.Substring(0, $RandomHostname.Length - 1)
+            [String]$RandomHostname = `
+                (-join (((65..72) + (74..78) + (80..90)) | Get-Random -count 1 | ForEach-Object {[Char]$_})) + `
+                (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -count $Length | ForEach-Object {[Char]$_}))
+
+            if ($Format -eq "Uppercase") {
+                $Result += $RandomHostname.Substring(0, $RandomHostname.Length - 1).ToUpper()
             }
-            Else {
+            else {
                 $Result += ($RandomHostname.Substring(0, $RandomHostname.Length - 1)).ToLower()
             }
         }
 
-    Return $Result
+    $Result
 }
