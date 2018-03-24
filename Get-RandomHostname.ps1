@@ -58,31 +58,43 @@ function Get-RandomHostname {
         [Parameter()]
         [ValidateSet("Uppercase", "Lowercase")]
         [String]
-        $Format = "Uppercase"
-        )
+        $Format = "Uppercase",
 
-    [Array]$Result = @()
+        [Parameter()]
+        [Switch]
+        $DisableStartFromLetter
+    )
 
-    for ($i = 1; $i -le $Number; $i++)
-        {
-            <#
-            ASCII characters:
-            65..90 - Uppercase letters [A-Z] (Exclude symbols: "073 I", "079 O").
-            48..57 - Numbers [0-9].
-            Always start from letter.
-            #>
+    process {
+        [Array]$Result = @()
 
-            [String]$RandomHostname = `
-                (-join (((65..72) + (74..78) + (80..90)) | Get-Random -count 1 | ForEach-Object {[Char]$_})) + `
-                (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -count $Length | ForEach-Object {[Char]$_}))
+        for ($i = 1; $i -le $Number; $i++)
+            {
+                <#
+                ASCII characters:
+                65..90 - Uppercase letters [A-Z] (Exclude symbols: "073 I", "079 O").
+                48..57 - Numbers [0-9].
+                Always start from letter.
+                #>
 
-            if ($Format -eq "Uppercase") {
-                $Result += $RandomHostname.Substring(0, $RandomHostname.Length - 1).ToUpper()
+                if ($DisableStartFromLetter) {
+                    [String]$RandomHostname = `
+                        (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -count ($Length + 1) | ForEach-Object {[Char]$_}))
+                }
+                else {
+                    [String]$RandomHostname = `
+                        (-join (((65..72) + (74..78) + (80..90)) | Get-Random -count 1 | ForEach-Object {[Char]$_})) + `
+                        (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -count $Length | ForEach-Object {[Char]$_}))
+                }
+
+                if ($Format -eq "Uppercase") {
+                    $Result += ($RandomHostname.Substring(0, ($RandomHostname.Length - 1))).ToUpper()
+                }
+                else {
+                    $Result += ($RandomHostname.Substring(0, ($RandomHostname.Length - 1))).ToLower()
+                }
             }
-            else {
-                $Result += ($RandomHostname.Substring(0, $RandomHostname.Length - 1)).ToLower()
-            }
-        }
 
-    $Result
+        $Result
+    }
 }
