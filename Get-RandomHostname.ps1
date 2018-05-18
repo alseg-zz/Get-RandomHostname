@@ -13,13 +13,16 @@ function Get-RandomHostname {
         (Exclude symbols: "073 I", "079 O").
 
     .PARAMETER Length
-        Length of hostname string (default is 15).
+        Length of hostname string (by default is 15).
 
     .PARAMETER Number
-        Number output random hostname strings (default is 1).
+        Number output random hostname strings (by default is 1).
 
-    .PARAMETER Uppercase
-        Hostname in uppercase or lowercase (default uppercase).
+    .PARAMETER Format
+        Parameter define result string format: "UPPERCASE", "lowercase" or "Capitalize" (by default is uppercase)
+
+    .PARAMETER DisableAlwaysStartFromLetter
+        By default, result string always start from letter. Parameter override this behavior
 
     .LINK
         https://github.com/alseg/Get-RandomHostname
@@ -38,6 +41,9 @@ function Get-RandomHostname {
 
     .EXAMPLE
         Get-RandomHostname -Length 5 -Number 20 -Format Lowercase
+
+    .EXAMPLE
+        Get-RandomHostname -Length 5 -Number 20 -Format Lowercase -DisableAlwaysStartFromLetter
     #>
 
     [CmdletBinding()]
@@ -56,13 +62,13 @@ function Get-RandomHostname {
         $Number = 1,
 
         [Parameter()]
-        [ValidateSet("Uppercase", "Lowercase")]
+        [ValidateSet("Uppercase", "Lowercase", "Capitalize")]
         [String]
         $Format = "Uppercase",
 
         [Parameter()]
         [Switch]
-        $DisableStartFromLetter
+        $DisableAlwaysStartFromLetter
     )
 
     process {
@@ -77,7 +83,7 @@ function Get-RandomHostname {
                 Always start from letter.
                 #>
 
-                if ($DisableStartFromLetter) {
+                if ($DisableAlwaysStartFromLetter) {
                     [String]$RandomHostname = `
                         (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -count ($Length + 1) | ForEach-Object {[Char]$_}))
                 }
@@ -87,11 +93,16 @@ function Get-RandomHostname {
                         (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -count $Length | ForEach-Object {[Char]$_}))
                 }
 
-                if ($Format -eq "Uppercase") {
-                    $Result += ($RandomHostname.Substring(0, ($RandomHostname.Length - 1))).ToUpper()
-                }
-                else {
-                    $Result += ($RandomHostname.Substring(0, ($RandomHostname.Length - 1))).ToLower()
+                switch($Format) {
+                    "Uppercase" {
+                        $Result += ($RandomHostname.Substring(0, ($RandomHostname.Length - 1))).ToUpper()
+                    }
+                    "Lowercase" {
+                        $Result += ($RandomHostname.Substring(0, ($RandomHostname.Length - 1))).ToLower()
+                    }
+                    "Capitalize" {
+                        $Result += (Get-Culture).TextInfo.ToTitleCase(($RandomHostname.Substring(0, ($RandomHostname.Length - 1))).ToLower())
+                    }
                 }
             }
 

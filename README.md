@@ -6,9 +6,10 @@ Import-Module <path>
 
 ```
 Get-RandomHostname
-Get-RandomHostname -Number 5
-Get-RandomHostname -Number 5 -Length 10
-Get-RandomHostname -Number 5 -Length 10 -Uppercase $false
+Get-RandomHostname -Length 22
+Get-RandomHostname -Length 5 -Number 20
+Get-RandomHostname -Length 5 -Number 20 -Format Lowercase
+Get-RandomHostname -Length 5 -Number 20 -Format Lowercase -DisableAlwaysStartFromLetter
 ```
 
 ```
