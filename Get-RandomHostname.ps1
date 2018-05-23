@@ -19,10 +19,13 @@ function Get-RandomHostname {
         Number output random hostname strings (by default is 1).
 
     .PARAMETER Format
-        Parameter define result string format: "UPPERCASE", "lowercase" or "Capitalize" (by default is uppercase)
+        Parameter define result string format: "UPPERCASE", "lowercase" or "Capitalize" (by default is uppercase).
 
     .PARAMETER DisableAlwaysStartFromLetter
-        By default, result string always start from letter. Parameter override this behavior
+        By default, result string always start from letter. Parameter override this behavior.
+
+    .PARAMETER Domain
+        Add to result string needed domain suffix. Result will be "hostname.example.com" instead "hostname".
 
     .LINK
         https://github.com/alseg/Get-RandomHostname
@@ -44,6 +47,9 @@ function Get-RandomHostname {
 
     .EXAMPLE
         Get-RandomHostname -Length 5 -Number 20 -Format Lowercase -DisableAlwaysStartFromLetter
+
+    .EXAMPLE
+        Get-RandomHostname -Number 5 -Domain dev.example.com
     #>
 
     [CmdletBinding()]
@@ -68,7 +74,11 @@ function Get-RandomHostname {
 
         [Parameter()]
         [Switch]
-        $DisableAlwaysStartFromLetter
+        $DisableAlwaysStartFromLetter,
+
+        [Parameter()]
+        [String]
+        $Domain
     )
 
     process {
@@ -93,17 +103,25 @@ function Get-RandomHostname {
                         (-join ((65..72) + (74..78) + (80..90) + (48..57) | Get-Random -count $Length | ForEach-Object {[Char]$_}))
                 }
 
+                $RandomHostname = ($RandomHostname.Substring(0, ($RandomHostname.Length - 1)))
+
+                if ($Domain) {
+                    $RandomHostname = $RandomHostname + '.' + $Domain
+                }
+
                 switch($Format) {
                     "Uppercase" {
-                        $Result += ($RandomHostname.Substring(0, ($RandomHostname.Length - 1))).ToUpper()
+                        $RandomHostname = $RandomHostname.ToUpper()
                     }
                     "Lowercase" {
-                        $Result += ($RandomHostname.Substring(0, ($RandomHostname.Length - 1))).ToLower()
+                        $RandomHostname = $RandomHostname.ToLower()
                     }
                     "Capitalize" {
-                        $Result += (Get-Culture).TextInfo.ToTitleCase(($RandomHostname.Substring(0, ($RandomHostname.Length - 1))).ToLower())
+                        $RandomHostname = (Get-Culture).TextInfo.ToTitleCase($RandomHostname.ToLower())
                     }
                 }
+
+                $Result += $RandomHostname
             }
 
         $Result
